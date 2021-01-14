@@ -1,6 +1,6 @@
 # newman-reporter-sql
 
-This package based on [vs4vijay/newman-reporter-influxdb](https://github.com/vs4vijay/newman-reporter-influxdb). It was customized to work with multiple SQL Engines such Postgres, MySQL, MariaDB, SQLite, Microsoft SQL Server.
+This package based on [vs4vijay/newman-reporter-influxdb](https://github.com/vs4vijay/newman-reporter-influxdb). It was customized to work with multiple SQL Engines such Postgres, MySQL, MariaDB, Microsoft SQL Server.
 
 SQL reporter for [Newman](https://github.com/postmanlabs/newman) that sends the test results information to SQL which can be used from Grafana/PowerBI to build dashboard.
 <!-- 
@@ -20,6 +20,13 @@ SQL reporter for [Newman](https://github.com/postmanlabs/newman) that sends the 
 
 1. `node` and `npm`
 2. `newman` - `npm install -g newman`
+3. Install the desired SQL engine:
+```bash
+$ npm install --save pg pg-hstore # Postgres
+$ npm install --save mysql2
+$ npm install --save mariadb
+$ npm install --save tedious # Microsoft SQL Server
+```
 
 ---
 

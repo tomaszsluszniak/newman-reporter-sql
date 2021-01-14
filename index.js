@@ -1,5 +1,5 @@
 'use strict';
 
-const InfluxDBReporter = require('./src/influxdb-reporter');
+const SQLReporter = require('./src/sql-reporter');
 
-module.exports = InfluxDBReporter;
+module.exports = SQLReporter;
