@@ -1,10 +1,6 @@
-'use strict';
-
 const { Sequelize, Model, DataTypes } = require('sequelize');
 
-
 class Table extends Model {}
-
 
 class SQLReporter {
   
@@ -23,7 +19,7 @@ class SQLReporter {
       list: [],
       debug: this.reporterOptions.debug || this.reporterOptions.sqlDebug || false
     };
-    const events = 'start iteration beforeItem item script request test assertion console exception done'.split(' ');
+    const events = 'start beforeItem item request assertion exception done'.split(' ');
     events.forEach((e) => { if (typeof this[e] == 'function') newmanEmitter.on(e, (err, args) => this[e](err, args)) });
 
     if (this.context.debug) {
@@ -31,7 +27,7 @@ class SQLReporter {
     }
   }
 
-  start(error, args) {
+  async start(error, args) {
     this.context.dialect = this.reporterOptions.sqlDialect || this.reporterOptions.dialect;
     this.context.server = this.reporterOptions.sqlServer || this.reporterOptions.server;
     this.context.port = this.reporterOptions.sqlPort || this.reporterOptions.port;
@@ -43,7 +39,7 @@ class SQLReporter {
     if (!this.context.dialect) {
       throw new Error('[-] ERROR: SQL Dialect is missing! Add --reporter-sql-dialect <dialect>.');
     } else {
-      if (!['mysql', 'mariadb', 'postgres', 'mssql'].includes(this.context.dialect)) {
+      if (!(['mysql', 'mariadb', 'postgres', 'mssql'].includes(this.context.dialect))) {
         throw new Error("[-] ERROR: SQL Dialect has to be one of: 'mysql', 'mariadb', 'postgres', 'mssql'");
       }
     }
@@ -66,43 +62,45 @@ class SQLReporter {
       throw new Error('[-] ERROR: SQL Password is missing! Add --reporter-sql-password <password>.');
     }
     console.log(`[+] Starting collection: ${this.options.collection.name} ${this.context.id}`);
+    
+    
 
-    try {
-      this.db_connection = new Sequelize(this.context.name, this.context.username, this.context.password, {
+    try { 
+      let db_connection = await new Sequelize(this.context.name, this.context.username, this.context.password, {
         dialect: this.context.dialect,
         host: this.context.server,
         port: this.context.port,
         username: this.context.username,
-        password: this.context.password,
-        dialectOptions: {}
-      });  
+        password: this.context.password
+      });
+
+      await db_connection.authenticate();
+
+      await Table.init({
+        collection_name: { type: DataTypes.STRING, allowNull: false },
+        request_name: { type: DataTypes.STRING, allowNull: false },
+        url: { type: DataTypes.STRING, allowNull: false },
+        method: { type: DataTypes.STRING, allowNull: false },
+        status: { type: DataTypes.STRING, allowNull: false },
+        code: { type: DataTypes.INTEGER, allowNull: false },
+        response_time: { type: DataTypes.INTEGER, allowNull: false },
+        response_size: { type: DataTypes.INTEGER, allowNull: false },
+        test_status: { type: DataTypes.STRING, allowNull: false },
+        assertions: { type: DataTypes.INTEGER, allowNull: false },
+        failed_count: { type: DataTypes.INTEGER, allowNull: false },
+        skipped_count: { type: DataTypes.INTEGER, allowNull: false },
+        failed: { type: DataTypes.STRING, allowNull: false },
+        skipped: { type: DataTypes.STRING, allowNull: false }
+      }, {
+        sequelize: db_connection,
+        tableName: this.context.table
+      });
+
+      await Table.sync({ alter: true });
+      
     } catch (error) {
-      console.log('[-] ERROR: While creating SLQ connection: ', this.context.debug ? error : error.message);
+      console.log('[-] ERROR:', this.context.debug ? error : error.message);
     }
-    
-    Table.init({
-      collection_name: { type: DataTypes.STRING, allowNull: false },
-      request_name: { type: DataTypes.STRING, allowNull: false },
-      url: { type: DataTypes.STRING, allowNull: false },
-      method: { type: DataTypes.STRING, allowNull: false },
-      status: { type: DataTypes.STRING, allowNull: false },
-      code: { type: DataTypes.INTEGER, allowNull: false },
-      response_time: { type: DataTypes.DATE, allowNull: false },
-      response_size: { type: DataTypes.INTEGER, allowNull: false },
-      test_status: { type: DataTypes.STRING, allowNull: false },
-      assertions: { type: DataTypes.INTEGER, allowNull: false },
-      failed_count: { type: DataTypes.INTEGER, allowNull: false },
-      skipped_count: { type: DataTypes.INTEGER, allowNull: false },
-      failed: { type: DataTypes.STRING, allowNull: false },
-      skipped: { type: DataTypes.STRING, allowNull: false }
-    }, {
-      sequelize: this.db_connection,
-      tableName: this.context.table
-    });
-    (async () => {
-      // Create table if not exists. When exists, alter columns if they are changed
-      table.sync({ alter: true });
-    })();
   }
 
   beforeItem(error, args) {
@@ -133,8 +131,8 @@ class SQLReporter {
       assertions: 0,
       failed_count: 0,
       skipped_count: 0,
-      failed: [],
-      skipped: []
+      failed: '',
+      skipped: ''
     };
 
     this.context.currentItem.data = data;
@@ -151,7 +149,7 @@ class SQLReporter {
     if(error) {
       this.context.currentItem.data.test_status = 'FAIL';
 
-      var failMessage = `${error.test} | ${error.name}`;
+      let failMessage = `${error.test} | ${error.name}`;
       if (this.context.debug) {
         failMessage += `: ${error.message}`;
       }
@@ -174,19 +172,9 @@ class SQLReporter {
     }
   }
 
-  item(error, args) {
-    insertData(this.context.currentItem.data);
-  }
-
-  done() {
-    this.db_connection.close();
-    console.log(`[+] Finished collection: ${this.options.collection.name} (${this.context.id})`);
-  }
-
-  /// Private method starts here
-
-  insertData(data) {
+  async item(error, args) {
     try {
+      var data = this.context.currentItem.data;
       await Table.create({
         collection_name: data.collection_name,
         request_name: data.request_name,
@@ -198,7 +186,7 @@ class SQLReporter {
         response_size: data.response_size,
         test_status: data.test_status,
         assertions: data.assertions,
-        failed_count: data,failed_count,
+        failed_count: data.failed_count,
         skipped_count: data.skipped_count,
         failed: data.failed,
         skipped: data.skipped
@@ -206,6 +194,10 @@ class SQLReporter {
     } catch (error) {
       console.log('[-] ERROR: While creating SQL connection: ', this.context.debug ? error : error.message);
     }
+  }
+
+  done() {
+    console.log(`[+] Finished collection: ${this.options.collection.name} (${this.context.id})`);
   }
 };
 
