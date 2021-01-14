@@ -1,14 +1,14 @@
 {
-  "name": "newman-reporter-influxdb",
-  "version": "2.0.0",
-  "description": "Newman Reporter for InfluxDB",
+  "name": "newman-reporter-sql",
+  "version": "1.0.0",
+  "description": "Newman Reporter for SQL",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vs4vijay/newman-reporter-influxdb.git"
+    "url": "git+https://github.com/tomaszsluszniak/newman-reporter-sql"
   },
   "keywords": [
     "newman",
@@ -20,12 +20,12 @@
     "testing",
     "test"
   ],
-  "author": "Vijay Soni (vs4vijay@gmail.com)",
+  "author": "Tomasz Słuszniak (tomasz.sluszniak@gmail.com)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/vs4vijay/newman-reporter-influxdb/issues"
+    "url": "https://github.com/tomaszsluszniak/newman-reporter-sql/issues"
   },
-  "homepage": "https://github.com/vs4vijay/newman-reporter-influxdb#readme",
+  "homepage": "https://github.com/tomaszsluszniak/newman-reporter-sql#readme",
   "dependencies": {
     "axios": "^0.21.1"
   }

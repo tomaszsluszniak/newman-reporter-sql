@@ -1,4 +1,4 @@
-PROJECT = "newman-reporter-influxdb"
+PROJECT = "newman-reporter-sql"
 
 .PHONY: local-install 
 

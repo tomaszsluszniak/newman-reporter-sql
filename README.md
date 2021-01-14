@@ -1,32 +1,32 @@
-# newman-reporter-influxdb
+# newman-reporter-sql
 
-InfluxDB reporter for [Newman](https://github.com/postmanlabs/newman) that sends the test results information to InfluxDB (1.x, 2.x) which can be used from Grafana to build dashboard.
+This package based on [vs4vijay/newman-reporter-influxdb](https://github.com/vs4vijay/newman-reporter-influxdb). It was customized to work with multiple SQL Engines such Postgres, MySQL, MariaDB, SQLite, Microsoft SQL Server.
 
+SQL reporter for [Newman](https://github.com/postmanlabs/newman) that sends the test results information to SQL which can be used from Grafana/PowerBI to build dashboard.
+<!-- 
 <a href="https://www.npmjs.com/package/newman-reporter-influxdb">
   <img alt="npm version" src="https://img.shields.io/npm/v/newman-reporter-influxdb.svg">
   <img alt="npm downloads" src="https://img.shields.io/npm/dm/newman-reporter-influxdb.svg">
   <img alt="code license" src="https://img.shields.io/github/license/vs4vijay/newman-reporter-influxdb">
   <img alt="npm publish" src="https://github.com/vs4vijay/newman-reporter-influxdb/workflows/npm publish/badge.svg">
-</a>
+</a> -->
 
 ## Getting Started
 
 1. Install `newman`
-2. Install `newman-reporter-influxdb`
-3. Install InfluxDB (Get the server address, port, database name, etc)
+2. Install `newman-reporter-sql`
 
 ### Prerequisites
 
 1. `node` and `npm`
 2. `newman` - `npm install -g newman`
-3. [InfluxDB](https://github.com/influxdata/influxdb)
 
 ---
 
 ## Installation
 
 ```console
-npm install -g newman-reporter-influxdb
+npm install -g newman-reporter-sql
 ```
 
 > Installation should be done globally if newman is installed globally, otherwise install without `-g` option
@@ -35,21 +35,21 @@ npm install -g newman-reporter-influxdb
 
 ## Usage
 
-Specify `-r influxdb` option while running the collection
+Specify `-r sql` option while running the collection
 
 ```bash
-newman run <collection-url> -r influxdb \
-  --reporter-influxdb-server <server-ip> \
-  --reporter-influxdb-port <server-port> \
-  --reporter-influxdb-name <database-name> \
-  --reporter-influxdb-measurement <measurement-name>
+newman run <collection-url> -r sql \
+  --reporter-sql-server <server-ip> \
+  --reporter-sql-port <server-port> \
+  --reporter-sql-name <database-name> \
+  --reporter-sql-table <table-name>
 ```
 
-- By default, reporter consider influxdb version 1.x (i.e 1.7, 1.8)
+<!-- - By default, reporter consider SQL version 1.x (i.e 1.7, 1.8)
 - In case of InfluxDB version 2, specify version, org and bucket name as well
   - `--reporter-influxdb-version 2`
   - `--reporter-influxdb-org <org-name>`
-  - `--reporter-influxdb-name <bucket-name>`
+  - `--reporter-influxdb-name <bucket-name>` -->
 
 Example:
 
@@ -61,19 +61,6 @@ newman run https://www.getpostman.com/collections/631643-f695cab7-6878-eb55-7943
 --reporter-influxdb-port 8086 \
 --reporter-influxdb-name newman_reports \
 --reporter-influxdb-measurement api_results
-
-# For InfluxDB version 2.x
-
-newman run https://www.getpostman.com/collections/631643-f695cab7-6878-eb55-7943-ad88e1ccfd65-JsLv -r influxdb \
-  --reporter-influxdb-server localhost \
-  --reporter-influxdb-port 8086 \
-  --reporter-influxdb-org viz \
-  --reporter-influxdb-version 2 \
-  --reporter-influxdb-username viz \
-  --reporter-influxdb-password db123456 \
-  --reporter-influxdb-name viz \
-  --reporter-influxdb-measurement api_results
-```
 
 ### Options:
 
@@ -95,7 +82,7 @@ newman run https://www.getpostman.com/collections/631643-f695cab7-6878-eb55-7943
 
 ## Compatibility
 
-**newman-reporter-influxdb** | **InfluxDB**
+**newman-reporter-sql** | **SQL**
 --- | ---
 v1.0.0+ | v1.7
 v2.0.0+ | v1.8, v2.x
