@@ -209,4 +209,4 @@ class SQLReporter {
   }
 };
 
-module.exports = InfluxDBReporter;
+module.exports = SQLReporter;
