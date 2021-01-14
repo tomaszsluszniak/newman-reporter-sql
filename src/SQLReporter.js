@@ -63,15 +63,14 @@ class SQLReporter {
     }
     console.log(`[+] Starting collection: ${this.options.collection.name} ${this.context.id}`);
     
-    
-
     try { 
       let db_connection = await new Sequelize(this.context.name, this.context.username, this.context.password, {
         dialect: this.context.dialect,
         host: this.context.server,
         port: this.context.port,
         username: this.context.username,
-        password: this.context.password
+        password: this.context.password,
+        logging: this.context.debug
       });
 
       await db_connection.authenticate();

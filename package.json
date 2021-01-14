@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/tomaszsluszniak/newman-reporter-sql#readme",
   "dependencies": {
-    "sequelize": "^6.3.5",
-    "tedious": "^9.2.3"
+    "tedious": "^9.2.3",
+    "sequelize": "^6.3.5"
   }
 }
