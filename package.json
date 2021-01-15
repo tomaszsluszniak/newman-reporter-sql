@@ -16,6 +16,7 @@
     "sql",
     "sequelize",
     "postman",
+    "tedious",
     "api",
     "api testing",
     "testing",
@@ -28,7 +29,6 @@
   },
   "homepage": "https://github.com/tomaszsluszniak/newman-reporter-sql#readme",
   "dependencies": {
-    "tedious": "^9.2.3",
     "sequelize": "^6.3.5"
   }
 }
