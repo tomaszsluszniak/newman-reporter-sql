@@ -118,7 +118,7 @@ class SQLReporter {
 
     console.log(`[${this.context.currentItem.index}] Running ${item.name}`);
 
-    console.log(args.response);
+    console.log(args.response.stream.toString());
 
     const data = {
       collection_name: this.options.collection.name, 
