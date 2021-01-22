@@ -129,7 +129,7 @@ class SQLReporter {
       code: args.response ? args.response.code : null,
       response_time: args.response ? args.response.responseTime : null,
       response_size: args.response ? args.response.responseSize : null,
-      response: args.response,
+      response: args.response.stream.toString('utf-8'),
       test_status: 'PASS',
       assertions: 0,
       failed_count: 0,
