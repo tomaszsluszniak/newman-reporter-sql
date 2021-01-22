@@ -17,7 +17,7 @@ class SQLReporter {
         skipped: []
       },
       list: [],
-      debug: this.reporterOptions.debug || this.reporterOptions.sqlDebug || false
+      debug: this.reporterOptions.sqlDebug || this.reporterOptions.debug || false
     };
     const events = 'start beforeItem item request assertion exception done'.split(' ');
     events.forEach((e) => { if (typeof this[e] == 'function') newmanEmitter.on(e, (err, args) => this[e](err, args)) });
@@ -80,16 +80,16 @@ class SQLReporter {
         request_name: { type: DataTypes.STRING, allowNull: false },
         url: { type: DataTypes.STRING, allowNull: false },
         method: { type: DataTypes.STRING, allowNull: false },
-        status: { type: DataTypes.STRING, allowNull: false },
-        code: { type: DataTypes.INTEGER, allowNull: false },
-        response_time: { type: DataTypes.INTEGER, allowNull: false },
-        response_size: { type: DataTypes.INTEGER, allowNull: false },
+        status: { type: DataTypes.STRING },
+        code: { type: DataTypes.INTEGER },
+        response_time: { type: DataTypes.INTEGER },
+        response_size: { type: DataTypes.INTEGER },
         test_status: { type: DataTypes.STRING, allowNull: false },
         assertions: { type: DataTypes.INTEGER, allowNull: false },
         failed_count: { type: DataTypes.INTEGER, allowNull: false },
         skipped_count: { type: DataTypes.INTEGER, allowNull: false },
-        failed: { type: DataTypes.STRING, allowNull: false },
-        skipped: { type: DataTypes.STRING, allowNull: false }
+        failed: { type: DataTypes.TEXT, allowNull: false },
+        skipped: { type: DataTypes.TEXT, allowNull: false }
       }, {
         sequelize: db_connection,
         tableName: this.context.table
@@ -122,10 +122,10 @@ class SQLReporter {
       request_name: item.name,
       url: request.url.toString(),
       method: request.method,
-      status: args.response.status,
-      code: args.response.code,
-      response_time: args.response.responseTime,
-      response_size: args.response.responseSize,
+      status: args.response ? args.response.status : null,
+      code: args.response ? args.response.code : null,
+      response_time: args.response ? args.response.responseTime : null,
+      response_size: args.response ? args.response.responseSize : null,
       test_status: 'PASS',
       assertions: 0,
       failed_count: 0,
