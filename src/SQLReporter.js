@@ -123,7 +123,7 @@ class SQLReporter {
     const data = {
       collection_name: this.options.collection.name, 
       request_name: item.name,
-      test_name: '',
+      test_name: this.context.text_name,
       url: request.url.toString(),
       method: request.method,
       status: args.response ? args.response.status : null,
