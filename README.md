@@ -83,6 +83,7 @@ newman run https://www.getpostman.com/collections/631643-f695cab7-6878-eb55-7943
 `--reporter-sql-username` | Username created for SQL database (e.g. `sa`).
 `--reporter-sql-password` | Password of the user (e.g. `p@ssw0rd`).
 `--reporter-sql-debug` (*Optional*) | Reporter debug mode (default: `false`).
+`--reporter-sql-test-name` (*Optional*) | It can be useful for reporting collected data from a specific test. Example `5 iterations`.
 
 ---
 

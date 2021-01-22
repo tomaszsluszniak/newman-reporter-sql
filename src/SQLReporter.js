@@ -35,6 +35,7 @@ class SQLReporter {
     this.context.table = this.reporterOptions.sqlTable || this.reporterOptions.table;
     this.context.username = this.reporterOptions.sqlUsername || this.reporterOptions.username;
     this.context.password = this.reporterOptions.sqlPassword || this.reporterOptions.password;
+    this.context.test_name = this.reporterOptions.sqlTest_name || this.reporterOptions.test_name;
 
     if (!this.context.dialect) {
       throw new Error('[-] ERROR: SQL Dialect is missing! Add --reporter-sql-dialect <dialect>.');
@@ -78,6 +79,7 @@ class SQLReporter {
       await Table.init({
         collection_name: { type: DataTypes.STRING, allowNull: false },
         request_name: { type: DataTypes.STRING, allowNull: false },
+        test_name: { type: DataTypes.STRING },
         url: { type: DataTypes.STRING, allowNull: false },
         method: { type: DataTypes.STRING, allowNull: false },
         status: { type: DataTypes.STRING },
@@ -121,13 +123,14 @@ class SQLReporter {
     const data = {
       collection_name: this.options.collection.name, 
       request_name: item.name,
+      test_name: '',
       url: request.url.toString(),
       method: request.method,
       status: args.response ? args.response.status : null,
       code: args.response ? args.response.code : null,
       response_time: args.response ? args.response.responseTime : null,
       response_size: args.response ? args.response.responseSize : null,
-      response: args.response.stream.toString('utf-8'),
+      response: args.response ? args.response.stream.toString('utf-8') : null,
       test_status: 'PASS',
       assertions: 0,
       failed_count: 0,
@@ -179,6 +182,7 @@ class SQLReporter {
       await Table.create({
         collection_name: data.collection_name,
         request_name: data.request_name,
+        test_name: data.test_name,
         url: data.url,
         method: data.method,
         status: data.status,
