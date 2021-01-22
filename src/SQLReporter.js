@@ -84,6 +84,7 @@ class SQLReporter {
         code: { type: DataTypes.INTEGER },
         response_time: { type: DataTypes.INTEGER },
         response_size: { type: DataTypes.INTEGER },
+        error_response: { type: DataTypes.TEXT },
         test_status: { type: DataTypes.STRING, allowNull: false },
         assertions: { type: DataTypes.INTEGER, allowNull: false },
         failed_count: { type: DataTypes.INTEGER, allowNull: false },
@@ -126,6 +127,7 @@ class SQLReporter {
       code: args.response ? args.response.code : null,
       response_time: args.response ? args.response.responseTime : null,
       response_size: args.response ? args.response.responseSize : null,
+      error_response: null,
       test_status: 'PASS',
       assertions: 0,
       failed_count: 0,
@@ -147,6 +149,7 @@ class SQLReporter {
 
     if(error) {
       this.context.currentItem.data.test_status = 'FAIL';
+      this.context.currentItem.data.error_response = args.response.toString();
 
       let failMessage = `${error.test} | ${error.name}`;
       if (this.context.debug) {
@@ -183,6 +186,7 @@ class SQLReporter {
         code: data.code,
         response_time: data.response_time,
         response_size: data.response_size,
+        error_response: data.error_response,
         test_status: data.test_status,
         assertions: data.assertions,
         failed_count: data.failed_count,
