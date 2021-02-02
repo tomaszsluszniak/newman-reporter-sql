@@ -1,4 +1,4 @@
-const { Sequelize, Model, DataTypes } = require('sequelize');
+import { Sequelize, Model, DataTypes } from 'sequelize';
 
 class Table extends Model {}
 
@@ -77,6 +77,7 @@ class SQLReporter {
       await db_connection.authenticate();
 
       await Table.init({
+        id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
         collection_name: { type: DataTypes.STRING, allowNull: false },
         request_name: { type: DataTypes.STRING, allowNull: false },
         test_name: { type: DataTypes.STRING },
@@ -176,10 +177,10 @@ class SQLReporter {
     }
   }
 
-  async item(error, args) {
+  item(error, args) {
     try {
       var data = this.context.currentItem.data;
-      await Table.create({
+      Table.create({
         collection_name: data.collection_name,
         request_name: data.request_name,
         test_name: data.test_name,
@@ -207,4 +208,4 @@ class SQLReporter {
   }
 };
 
-module.exports = SQLReporter;
+export default SQLReporter;

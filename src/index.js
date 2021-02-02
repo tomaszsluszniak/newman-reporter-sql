@@ -1,3 +1,3 @@
 'use strict';
 
-module.exports = require('./SQLReporter');
+export { default } from "./SQLReporter";
