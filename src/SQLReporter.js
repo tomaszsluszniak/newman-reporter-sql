@@ -1,4 +1,4 @@
-import { Sequelize, Model, DataTypes } from 'sequelize';
+const { Sequelize, Model, DataTypes } = require('sequelize');
 
 class Table extends Model {}
 
@@ -208,4 +208,4 @@ class SQLReporter {
   }
 };
 
-export default SQLReporter;
+module.exports = SQLReporter;
