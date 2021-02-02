@@ -177,10 +177,10 @@ class SQLReporter {
     }
   }
 
-  item(error, args) {
+  async item(error, args) {
     try {
       var data = this.context.currentItem.data;
-      Table.create({
+      await Table.create({
         collection_name: data.collection_name,
         request_name: data.request_name,
         test_name: data.test_name,
