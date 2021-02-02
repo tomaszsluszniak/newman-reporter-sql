@@ -77,6 +77,7 @@ class SQLReporter {
       await db_connection.authenticate();
 
       await Table.init({
+        id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
         collection_name: { type: DataTypes.STRING, allowNull: false },
         request_name: { type: DataTypes.STRING, allowNull: false },
         test_name: { type: DataTypes.STRING },
