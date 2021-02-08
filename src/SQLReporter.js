@@ -1,7 +1,5 @@
 const { Sequelize, Model, DataTypes } = require('sequelize');
 
-class Table extends Model {}
-
 class SQLReporter {
   
   constructor(newmanEmitter, reporterOptions, options) {
@@ -25,9 +23,7 @@ class SQLReporter {
     if (this.context.debug) {
       console.log('[+] Reporter Options', reporterOptions);
     }
-  }
 
-  async start(error, args) {
     this.context.dialect = this.reporterOptions.sqlDialect || this.reporterOptions.dialect;
     this.context.server = this.reporterOptions.sqlServer || this.reporterOptions.server;
     this.context.port = this.reporterOptions.sqlPort || this.reporterOptions.port;
@@ -62,21 +58,26 @@ class SQLReporter {
     if (!this.context.password) {
       throw new Error('[-] ERROR: SQL Password is missing! Add --reporter-sql-password <password>.');
     }
+  }
+
+  async start(error, args) {
     console.log(`[+] Starting collection: ${this.options.collection.name} ${this.context.id}`);
-    
-    try { 
-      let db_connection = await new Sequelize(this.context.name, this.context.username, this.context.password, {
+
+    try {
+      this.db_connection = await new Sequelize(this.context.name, this.context.username, this.context.password, {
         dialect: this.context.dialect,
         host: this.context.server,
         port: this.context.port,
         username: this.context.username,
         password: this.context.password,
-        logging: this.context.debug
+        logging: (...msg) => {
+          if (this.context.debug) {
+            console.log(msg);
+          }
+        }
       });
 
-      await db_connection.authenticate();
-
-      await Table.init({
+      this.result_table = this.db_connection.define('table', {
         id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
         collection_name: { type: DataTypes.STRING, allowNull: false },
         request_name: { type: DataTypes.STRING, allowNull: false },
@@ -95,12 +96,11 @@ class SQLReporter {
         failed: { type: DataTypes.TEXT, allowNull: false },
         skipped: { type: DataTypes.TEXT, allowNull: false }
       }, {
-        sequelize: db_connection,
         tableName: this.context.table
       });
 
-      await Table.sync({ alter: true });
-      
+      await this.result_table.sync({ alter: true });
+
     } catch (error) {
       console.log('[-] ERROR:', this.context.debug ? error : error.message);
     }
@@ -180,7 +180,7 @@ class SQLReporter {
   async item(error, args) {
     try {
       var data = this.context.currentItem.data;
-      await Table.create({
+      await this.result_table.create({
         collection_name: data.collection_name,
         request_name: data.request_name,
         test_name: data.test_name,
@@ -198,8 +198,8 @@ class SQLReporter {
         failed: data.failed,
         skipped: data.skipped
       });
-    } catch (error) {
-      console.log('[-] ERROR: While creating SQL connection: ', this.context.debug ? error : error.message);
+    } catch (err) {
+      console.log('[-] ERROR: While inserting data: ', this.context.debug ? err : err.message);
     }
   }
 
