@@ -15,7 +15,7 @@ class SQLReporter {
         skipped: []
       },
       list: [],
-      debug: this.reporterOptions.debug || false
+      debug: this.reporterOptions.sqlDebug || this.reporterOptions.debug || false
     };
     const events = 'start beforeItem item request assertion exception done'.split(' ');
     events.forEach((e) => { if (typeof this[e] == 'function') newmanEmitter.on(e, (err, args) => this[e](err, args)) });
@@ -24,14 +24,14 @@ class SQLReporter {
       console.log('[+] Reporter Options', reporterOptions);
     }
 
-    this.context.dialect = this.reporterOptions.dialect || undefined;
-    this.context.server = this.reporterOptions.server || undefined;
-    this.context.port = this.reporterOptions.port || undefined;
-    this.context.name = this.reporterOptions.name || undefined;
-    this.context.table = this.reporterOptions.table || undefined;
-    this.context.username = this.reporterOptions.username || undefined;
-    this.context.password = this.reporterOptions.password || undefined;
-    this.context.test_name = this.reporterOptions.testName || undefined;
+    this.context.dialect = this.reporterOptions.sqlDialect || this.reporterOptions.dialect;
+    this.context.server = this.reporterOptions.sqlServer || this.reporterOptions.server;
+    this.context.port = this.reporterOptions.sqlPort || this.reporterOptions.port;
+    this.context.name = this.reporterOptions.sqlName || this.reporterOptions.name;
+    this.context.table = this.reporterOptions.sqlTable || this.reporterOptions.table;
+    this.context.username = this.reporterOptions.sqlUsername || this.reporterOptions.username;
+    this.context.password = this.reporterOptions.sqlPassword || this.reporterOptions.password;
+    this.context.test_name = this.reporterOptions.sqlTestName || this.reporterOptions.testName;
 
     if (!this.context.dialect) {
       throw new Error('[-] ERROR: SQL Dialect is missing! Add --reporter-sql-dialect <dialect>.');
