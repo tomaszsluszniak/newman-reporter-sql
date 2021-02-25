@@ -31,7 +31,7 @@ class SQLReporter {
     this.context.table = this.reporterOptions.sqlTable || this.reporterOptions.table;
     this.context.username = this.reporterOptions.sqlUsername || this.reporterOptions.username;
     this.context.password = this.reporterOptions.sqlPassword || this.reporterOptions.password;
-    this.context.test_name = this.reporterOptions.sqlTest_name || this.reporterOptions.test_name;
+    this.context.test_name = this.reporterOptions.sqlTestName || this.reporterOptions.test_name;
 
     if (!this.context.dialect) {
       throw new Error('[-] ERROR: SQL Dialect is missing! Add --reporter-sql-dialect <dialect>.');
