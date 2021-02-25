@@ -99,7 +99,7 @@ class SQLReporter {
         tableName: this.context.table
       });
 
-      await this.result_table.sync({ alter: true });
+      await this.result_table.sync();
 
     } catch (error) {
       console.log('[-] ERROR:', this.context.debug ? error : error.message);
