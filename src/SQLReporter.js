@@ -178,29 +178,28 @@ class SQLReporter {
   }
 
   async item(error, args) {
-    try {
-      var data = this.context.currentItem.data;
-      await this.result_table.create({
-        collection_name: data.collection_name,
-        request_name: data.request_name,
-        test_name: data.test_name,
-        url: data.url,
-        method: data.method,
-        status: data.status,
-        code: data.code,
-        response_time: data.response_time,
-        response_size: data.response_size,
-        response: data.response,
-        test_status: data.test_status,
-        assertions: data.assertions,
-        failed_count: data.failed_count,
-        skipped_count: data.skipped_count,
-        failed: data.failed,
-        skipped: data.skipped
-      });
-    } catch (err) {
-      console.log('[-] ERROR: While inserting data: ', this.context.debug ? err : err.message);
-    }
+    var data = this.context.currentItem.data;
+    this.result_table.create({
+      collection_name: data.collection_name,
+      request_name: data.request_name,
+      test_name: data.test_name,
+      url: data.url,
+      method: data.method,
+      status: data.status,
+      code: data.code,
+      response_time: data.response_time,
+      response_size: data.response_size,
+      response: data.response,
+      test_status: data.test_status,
+      assertions: data.assertions,
+      failed_count: data.failed_count,
+      skipped_count: data.skipped_count,
+      failed: data.failed,
+      skipped: data.skipped
+    }).catch((error) => {
+      console.log(error);
+      console.log('[-] ERROR: While inserting data: ', this.context.debug ? err : error.message);
+    });
   }
 
   done() {
