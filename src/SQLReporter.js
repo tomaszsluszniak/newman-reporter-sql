@@ -197,7 +197,6 @@ class SQLReporter {
       failed: data.failed,
       skipped: data.skipped
     }).catch((error) => {
-      console.log(error);
       console.log('[-] ERROR: While inserting data: ', this.context.debug ? err : error.message);
     });
   }
