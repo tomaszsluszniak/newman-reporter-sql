@@ -4,7 +4,7 @@ This package based on [vs4vijay/newman-reporter-influxdb](https://github.com/vs4
 
 SQL reporter for [Newman](https://github.com/postmanlabs/newman) that sends the test results information to SQL which can be used in Grafana/PowerBI to build dashboard.
 
-<a href="https://www.npmjs.com/package/newman-reporter-sql"><img alt="npm" src="https://badgen.net/badge/release/v1.0.10/red?icon=npm" /></a>
+<a href="https://www.npmjs.com/package/newman-reporter-sql"><img alt="npm" src="https://badgen.net/badge/release/v1.0.11/red?icon=npm" /></a>
 <a href=""><img alt="sequelize" src="https://badgen.net/badge/sequelize/v6.3.5/yellow?icon=npm"/></a>
 <img alt="license" src="https://badgen.net/badge/license/MIT/blue">
 
