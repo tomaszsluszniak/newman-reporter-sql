@@ -23,10 +23,10 @@ SQL reporter for [Newman](https://github.com/postmanlabs/newman) that sends the 
 2. `newman` - `npm install -g newman`
 3. Install the desired SQL engine:
 ```console
-$ npm install --save pg pg-hstore # PostgreSQL
+$ npm install --save pg pg-hstore  # PostgreSQL
 $ npm install --save mysql2
 $ npm install --save mariadb
-$ npm install --save tedious # Microsoft SQL Server
+$ npm install --save tedious  # Microsoft SQL Server
 ```
 
 ---
@@ -45,7 +45,7 @@ npm install -g newman-reporter-sql
 
 Specify `-r sql` option while running the collection
 
-```bash
+```console
 newman run <collection-url> -r sql \
   --reporter-sql-dialect <mysql | mariadb | postgres | mssql> \
   --reporter-sql-server <server-name> \
@@ -56,11 +56,9 @@ newman run <collection-url> -r sql \
   --reporter-sql-password <password>
 ```
 
-Example:
+### MSSQL Example:
 
-```
-# For Microsoft SQL Server
-
+```console
 newman run https://www.getpostman.com/collections/631643-f695cab7-6878-eb55-7943-ad88e1ccfd65-JsLv -r sql \
   --reporter-sql-dialect mssql \
   --reporter-sql-server localhost \
@@ -69,6 +67,23 @@ newman run https://www.getpostman.com/collections/631643-f695cab7-6878-eb55-7943
   --reporter-sql-table api_results \
   --reporter-sql-username sa \
   --reporter-sql-password p@ssw0rd
+```
+
+### PostgreSQL Example:
+```console 
+docker run --name postgres -e POSTGRES_PASSWORD=test1234 -p 5432:5432 -d postgres
+```
+
+```console
+newman run https://www.postman.com/collections/cb208e7e64056f5294e5 -r sql \
+  --reporter-sql-dialect postgres \
+  --reporter-sql-server localhost \
+  --reporter-sql-port 5432 \
+  --reporter-sql-name postgres \
+  --reporter-sql-table test1234 \
+  --reporter-sql-username postgres \
+  --reporter-sql-password test1234 \
+  --reporter-sql-test-name "test name"
 ```
 
 ### Options:
