@@ -58,6 +58,10 @@ class SQLReporter {
     if (!this.context.password) {
       throw new Error('[-] ERROR: SQL Password is missing! Add --reporter-sql-password <password>.');
     }
+
+    if (this.context.debug) {
+      console.log('[+] Initial Context', this.context);
+    }
   }
 
   async start(error, args) {
@@ -94,7 +98,8 @@ class SQLReporter {
         failed_count: { type: DataTypes.INTEGER, allowNull: false },
         skipped_count: { type: DataTypes.INTEGER, allowNull: false },
         failed: { type: DataTypes.TEXT, allowNull: false },
-        skipped: { type: DataTypes.TEXT, allowNull: false }
+        skipped: { type: DataTypes.TEXT, allowNull: false },
+        iteration: { type: DataTypes.INTEGER, allowNull: true }
       }, {
         tableName: this.context.table
       });
@@ -137,7 +142,8 @@ class SQLReporter {
       failed_count: 0,
       skipped_count: 0,
       failed: '',
-      skipped: ''
+      skipped: '',
+      iteration: cursor.iteration + 1
     };
 
     this.context.currentItem.data = data;
@@ -195,9 +201,10 @@ class SQLReporter {
       failed_count: data.failed_count,
       skipped_count: data.skipped_count,
       failed: data.failed,
-      skipped: data.skipped
+      skipped: data.skipped,
+      iteration: data.iteration
     }).catch((error) => {
-      console.log('[-] ERROR: While inserting data: ', this.context.debug ? err : error.message);
+      console.log('[-] ERROR: While inserting data: ', this.context.debug ? error : error.message);
     });
   }
 
