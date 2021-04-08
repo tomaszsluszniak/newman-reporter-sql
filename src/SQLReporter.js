@@ -126,8 +126,8 @@ class SQLReporter {
     console.log(`[${this.context.currentItem.index}] Running ${item.name}`);
 
     if (this.context.debug) {
-      console.log('[+] Current context', this.context);
       console.log('[+] Options', this.options);
+      console.log('[+] args', args);
     }
 
     const data = {
