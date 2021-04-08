@@ -148,7 +148,7 @@ class SQLReporter {
       skipped_count: 0,
       failed: '',
       skipped: '',
-      iteration: cursor.iteration
+      iteration: cursor.iteration + 1
     };
 
     this.context.currentItem.data = data;
