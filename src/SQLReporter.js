@@ -108,7 +108,7 @@ class SQLReporter {
         await this.result_table.sync().then(result => {
           console.log('[*] Sync result: ', result);
         });
-      })
+      })();
     } catch (error) {
       console.log('[-] ERROR:', this.context.debug ? error : error.message);
     }
