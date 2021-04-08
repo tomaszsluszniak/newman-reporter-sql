@@ -58,6 +58,10 @@ class SQLReporter {
     if (!this.context.password) {
       throw new Error('[-] ERROR: SQL Password is missing! Add --reporter-sql-password <password>.');
     }
+
+    if (this.context.debug) {
+      console.log('[+] Initial Context', this.context);
+    }
   }
 
   async start(error, args) {
@@ -120,6 +124,11 @@ class SQLReporter {
     const { cursor, item, request } = args;
 
     console.log(`[${this.context.currentItem.index}] Running ${item.name}`);
+
+    if (this.context.debug) {
+      console.log('[+] Current context', this.context);
+      console.log('[+] Options', this.options);
+    }
 
     const data = {
       collection_name: this.options.collection.name, 
