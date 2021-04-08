@@ -126,11 +126,6 @@ class SQLReporter {
 
     console.log(`[${this.context.currentItem.index}] Running ${item.name}`);
 
-    if (this.context.debug) {
-      console.log('[+] Options', this.options);
-      console.log('[+] args', args);
-    }
-
     const data = {
       collection_name: this.options.collection.name, 
       request_name: item.name,
