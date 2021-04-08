@@ -64,51 +64,50 @@ class SQLReporter {
     }
   }
 
-  start(error, args) {
+  async start(error, args) {
     console.log(`[+] Starting collection: ${this.options.collection.name} ${this.context.id}`);
 
     try {
-      (async function() {
-        this.db_connection = await new Sequelize(this.context.name, this.context.username, this.context.password, {
-          dialect: this.context.dialect,
-          host: this.context.server,
-          port: this.context.port,
-          username: this.context.username,
-          password: this.context.password,
-          logging: (...msg) => {
-            if (this.context.debug) {
-              console.log(msg);
-            }
+      this.db_connection = await new Sequelize(this.context.name, this.context.username, this.context.password, {
+        dialect: this.context.dialect,
+        host: this.context.server,
+        port: this.context.port,
+        username: this.context.username,
+        password: this.context.password,
+        logging: (...msg) => {
+          if (this.context.debug) {
+            console.log(msg);
           }
-        });
+        }
+      });
 
-        this.result_table = this.db_connection.define('table', {
-          id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-          collection_name: { type: DataTypes.STRING(255), allowNull: false },
-          request_name: { type: DataTypes.STRING(255), allowNull: false },
-          test_name: { type: DataTypes.STRING(255) },
-          url: { type: DataTypes.STRING(255), allowNull: false },
-          method: { type: DataTypes.STRING(255), allowNull: false },
-          status: { type: DataTypes.STRING(255) },
-          code: { type: DataTypes.INTEGER },
-          response_time: { type: DataTypes.INTEGER },
-          response_size: { type: DataTypes.INTEGER },
-          response: { type: DataTypes.TEXT },
-          test_status: { type: DataTypes.STRING(255), allowNull: false },
-          assertions: { type: DataTypes.INTEGER, allowNull: false },
-          failed_count: { type: DataTypes.INTEGER, allowNull: false },
-          skipped_count: { type: DataTypes.INTEGER, allowNull: false },
-          failed: { type: DataTypes.TEXT, allowNull: false },
-          skipped: { type: DataTypes.TEXT, allowNull: false },
-          iteration: { type: DataTypes.INTEGER, allowNull: true }
-        }, {
-          tableName: this.context.table
-        });
-  
-        await this.result_table.sync().then(result => {
-          console.log('[*] Sync result: ', result);
-        });
-      })();
+      this.result_table = this.db_connection.define('table', {
+        id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+        collection_name: { type: DataTypes.STRING(255), allowNull: false },
+        request_name: { type: DataTypes.STRING(255), allowNull: false },
+        test_name: { type: DataTypes.STRING(255) },
+        url: { type: DataTypes.STRING(255), allowNull: false },
+        method: { type: DataTypes.STRING(255), allowNull: false },
+        status: { type: DataTypes.STRING(255) },
+        code: { type: DataTypes.INTEGER },
+        response_time: { type: DataTypes.INTEGER },
+        response_size: { type: DataTypes.INTEGER },
+        response: { type: DataTypes.TEXT },
+        test_status: { type: DataTypes.STRING(255), allowNull: false },
+        assertions: { type: DataTypes.INTEGER, allowNull: false },
+        failed_count: { type: DataTypes.INTEGER, allowNull: false },
+        skipped_count: { type: DataTypes.INTEGER, allowNull: false },
+        failed: { type: DataTypes.TEXT, allowNull: false },
+        skipped: { type: DataTypes.TEXT, allowNull: false },
+        iteration: { type: DataTypes.INTEGER, allowNull: true }
+      }, {
+        tableName: this.context.table
+      });
+
+      await this.result_table.sync().then(result => {
+        console.log('[*] Sync result: ', result);
+      });
+
     } catch (error) {
       console.log('[-] ERROR:', this.context.debug ? error : error.message);
     }
