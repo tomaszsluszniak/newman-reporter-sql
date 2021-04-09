@@ -126,7 +126,6 @@ class SQLReporter {
     const { cursor, item, request } = args;
 
     console.log(`[${this.context.currentItem.index}] Running ${item.name}`);
-    console.log('[+] Globals', this.options.globals.id);
 
     const data = {
       collection_name: this.options.collection.name, 
@@ -146,7 +145,7 @@ class SQLReporter {
       failed: '',
       skipped: '',
       iteration: cursor.iteration + 1,
-      newman_thread: this.options.globals.id.toString()
+      newman_thread: this.options.globals.id
     };
 
     this.context.currentItem.data = data;
