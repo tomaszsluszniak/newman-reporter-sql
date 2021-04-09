@@ -205,7 +205,8 @@ class SQLReporter {
       skipped_count: data.skipped_count,
       failed: data.failed,
       skipped: data.skipped,
-      iteration: data.iteration
+      iteration: data.iteration,
+      newman_thread: data.newman_thread
     }).catch((error) => {
       console.log('[-] ERROR: While inserting data: ', this.context.debug ? error : error.message);
     });
