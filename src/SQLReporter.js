@@ -100,7 +100,7 @@ class SQLReporter {
         failed: { type: DataTypes.TEXT, allowNull: false },
         skipped: { type: DataTypes.TEXT, allowNull: false },
         iteration: { type: DataTypes.INTEGER, allowNull: true },
-        newman_thread: { type: DataTypes.UUID, allowNull: false },
+        newman_thread: { type: DataTypes.UUID, allowNull: true },
       }, {
         tableName: this.context.table
       });

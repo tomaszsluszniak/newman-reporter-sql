@@ -1,6 +1,6 @@
 {
   "name": "newman-reporter-sql",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "Newman Reporter for SQL based on https://github.com/vs4vijay/newman-reporter-influxdb",
   "main": "src/index.js",
   "scripts": {
