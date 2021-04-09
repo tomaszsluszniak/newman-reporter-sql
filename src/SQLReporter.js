@@ -146,7 +146,7 @@ class SQLReporter {
       failed: '',
       skipped: '',
       iteration: cursor.iteration + 1,
-      newman_thread: this.options.globals.id
+      newman_thread: this.options.globals.id.toString()
     };
 
     this.context.currentItem.data = data;
