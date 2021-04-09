@@ -99,7 +99,8 @@ class SQLReporter {
         skipped_count: { type: DataTypes.INTEGER, allowNull: false },
         failed: { type: DataTypes.TEXT, allowNull: false },
         skipped: { type: DataTypes.TEXT, allowNull: false },
-        iteration: { type: DataTypes.INTEGER, allowNull: true }
+        iteration: { type: DataTypes.INTEGER, allowNull: true },
+        newman_thread: { type: DataTypes.UUID, allowNull: false },
       }, {
         tableName: this.context.table
       });
@@ -143,7 +144,8 @@ class SQLReporter {
       skipped_count: 0,
       failed: '',
       skipped: '',
-      iteration: cursor.iteration + 1
+      iteration: cursor.iteration + 1,
+      newman_thread: this.options.globals.id
     };
 
     this.context.currentItem.data = data;
